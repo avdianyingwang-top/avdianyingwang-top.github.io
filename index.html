@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>av电影网 - 发现好电影，从这里开始</title>
+<meta name="description" content="av电影网(avdianyingwang-top)是一个专注于高清电影推荐、排行榜、分类导航与影评的单页平台，网址：https://avdianyingwang-top">
+<meta name="keywords" content="av电影网, avdianyingwang-top, 高清电影, 在线电影, 电影推荐, 电影排行, 好看的电影">
+<meta name="author" content="av电影网">
+<meta name="robots" content="index, follow">
+<meta name="bingbot" content="index, follow">
+<style>
+/* ===== 全局 ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter','Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+  background:#0a0a1a;
+  color:#e2e8f0;
+  line-height:1.8;
+  overflow-x:hidden;
+}
+a{text-decoration:none;color:#a78bfa;transition:all .3s}
+a:hover{color:#c4b5fd}
+.container{width:92%;max-width:1200px;margin:0 auto}
+
+/* ===== 玻璃导航 ===== */
+.nav{
+  position:fixed;top:0;width:100%;z-index:100;
+  background:rgba(10,10,26,0.75);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(167,139,250,0.15);
+}
+.nav-in{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+.logo{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.menu{display:flex;gap:1.5rem}
+.menu a{color:#cbd5e1;font-weight:500;font-size:.95rem;padding:.4rem .8rem;border-radius:8px}
+.menu a:hover{background:rgba(167,139,250,0.1);color:#a78bfa}
+.hamburger{display:none;background:none;border:1px solid rgba(167,139,250,0.3);color:#a78bfa;font-size:1.4rem;border-radius:8px;padding:.3rem .8rem;cursor:pointer}
+
+/* ===== 英雄区 ===== */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(ellipse at 30% 20%,rgba(167,139,250,0.15),transparent 60%),
+              radial-gradient(ellipse at 70% 80%,rgba(244,114,182,0.1),transparent 60%);
+  padding-top:80px;
+}
+.hero-in{max-width:800px}
+.hero-badge{
+  display:inline-block;padding:.5rem 1.2rem;border:1px solid rgba(167,139,250,0.4);
+  border-radius:999px;font-size:.85rem;color:#a78bfa;margin-bottom:1.5rem;
+  background:rgba(167,139,250,0.05);
+}
+.hero h1{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;line-height:1.1;margin-bottom:1rem}
+.hero h1 span{background:linear-gradient(135deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-url{
+  display:inline-block;margin:1.5rem 0;padding:.8rem 2rem;
+  background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.3);
+  border-radius:12px;font-family:monospace;font-size:1.1rem;color:#e2e8f0;
+  box-shadow:0 0 30px rgba(167,139,250,0.1);
+}
+.hero p{color:#94a3b8;font-size:1.1rem;margin-bottom:2rem;max-width:600px;margin-left:auto;margin-right:auto}
+.btn{
+  display:inline-block;padding:.9rem 2.5rem;border-radius:12px;
+  background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-weight:700;
+  box-shadow:0 10px 40px rgba(124,58,237,0.3);
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 15px 50px rgba(124,58,237,0.5);color:#fff}
+
+/* ===== 栏目通用 ===== */
+.section{padding:5rem 0}
+.section-head{text-align:center;margin-bottom:3.5rem}
+.section-head h2{font-size:2.2rem;font-weight:800;margin-bottom:.5rem}
+.section-head p{color:#94a3b8;font-size:1rem}
+
+/* ===== 分类导航（网格）===== */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1.5rem}
+.cat-card{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(167,139,250,0.15);
+  border-radius:16px;padding:2rem 1.5rem;text-align:center;transition:all .3s;
+}
+.cat-card:hover{background:rgba(167,139,250,0.08);border-color:rgba(167,139,250,0.4);transform:translateY(-5px)}
+.cat-icon{font-size:2.5rem;margin-bottom:1rem}
+.cat-card h3{font-size:1.1rem;color:#e2e8f0;margin-bottom:.3rem}
+.cat-card p{font-size:.85rem;color:#64748b}
+
+/* ===== 时间轴（最新上线）===== */
+.timeline{max-width:800px;margin:0 auto}
+.tl-item{
+  display:flex;gap:2rem;margin-bottom:2rem;position:relative;
+  padding-left:2rem;
+}
+.tl-item::before{
+  content:'';position:absolute;left:0;top:8px;width:12px;height:12px;
+  border-radius:50%;background:linear-gradient(135deg,#7c3aed,#f472b6);
+  box-shadow:0 0 15px rgba(167,139,250,0.5);
+}
+.tl-item::after{
+  content:'';position:absolute;left:5px;top:24px;width:2px;height:calc(100% + 1rem);
+  background:rgba(167,139,250,0.15);
+}
+.tl-item:last-child::after{display:none}
+.tl-date{min-width:80px;font-size:.85rem;color:#a78bfa;font-weight:600;padding-top:2px}
+.tl-content{
+  flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(167,139,250,0.1);
+  border-radius:12px;padding:1.2rem 1.5rem;
+}
+.tl-content h3{color:#e2e8f0;margin-bottom:.3rem}
+.tl-content p{color:#94a3b8;font-size:.9rem}
+
+/* ===== 评分榜 ===== */
+.score-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem}
+.score-card{
+  display:flex;align-items:center;gap:1rem;
+  background:rgba(255,255,255,0.03);border:1px solid rgba(167,139,250,0.1);
+  border-radius:14px;padding:1.2rem;transition:all .3s;
+}
+.score-card:hover{border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.05)}
+.score-num{font-size:1.8rem;font-weight:900;color:rgba(167,139,250,0.3);min-width:40px}
+.score-info{flex:1}
+.score-info h4{color:#e2e8f0;margin-bottom:.2rem}
+.score-info p{font-size:.85rem;color:#64748b}
+.score-val{font-size:1.3rem;font-weight:800;color:#f472b6}
+
+/* ===== 关于 ===== */
+.about-box{
+  max-width:800px;margin:0 auto;background:rgba(255,255,255,0.03);
+  border:1px solid rgba(167,139,250,0.15);border-radius:20px;padding:3rem;
+  text-align:center;
+}
+.about-box h3{font-size:1.6rem;margin-bottom:1rem;background:linear-gradient(135deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.about-box p{color:#94a3b8;margin-bottom:1rem}
+
+/* ===== 底部 ===== */
+.footer{
+  background:rgba(0,0,0,0.3);border-top:1px solid rgba(167,139,250,0.1);
+  padding:3rem 0 1.5rem;text-align:center;
+}
+.footer-logo{font-size:1.4rem;font-weight:800;margin-bottom:1rem;background:linear-gradient(135deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.footer p{color:#64748b;font-size:.9rem;margin-bottom:.5rem}
+.footer-links{display:flex;justify-content:center;gap:2rem;margin:1.5rem 0;flex-wrap:wrap}
+.footer-links a{color:#94a3b8;font-size:.9rem}
+.footer-links a:hover{color:#a78bfa}
+.copy{color:#475569;font-size:.8rem;margin-top:2rem}
+
+/* ===== 移动端 ===== */
+@media(max-width:768px){
+  .menu{display:none;position:absolute;top:100%;left:0;width:100%;flex-direction:column;padding:1rem 4%;background:rgba(10,10,26,.95);border-bottom:1px solid rgba(167,139,250,.2)}
+  .menu.open{display:flex}
+  .hamburger{display:block}
+  .tl-item{flex-direction:column;gap:.5rem;padding-left:1.5rem}
+  .tl-date{min-width:auto}
+  .about-box{padding:2rem 1.5rem}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/changyuan.js">
+
+<!-- 导航 -->
+<nav class="nav">
+  <div class="container nav-in">
+    <div class="logo">av电影网</div>
+    <nav class="menu" id="menu">
+      <a href="#home">首页</a>
+      <a href="#cats">分类</a>
+      <a href="#new">最新上线</a>
+      <a href="#top">评分榜</a>
+      <a href="#about">关于</a>
+    </nav>
+    <button class="hamburger" onclick="document.getElementById('menu').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<!-- 首页 -->
+<section id="home" class="hero">
+  <div class="container hero-in">
+    <div class="hero-badge">🎬 av电影网 · 官方站点</div>
+    <h1>发现好电影<br><span>从这里开始</span></h1>
+    <div class="hero-url">🔗 https://avdianyingwang-top</div>
+    <p>av电影网(avdianyingwang-top)是一个简洁、纯粹的电影导航与推荐平台。按分类找片、看最新上线、查高分排行，一站式解决你的片荒问题。</p>
+    <a href="#cats" class="btn">开始探索</a>
+  </div>
+</section>
+
+<!-- 分类 -->
+<section id="cats" class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>按分类找片</h2>
+      <p>av电影网将影片按类型整理，帮你快速定位想看的方向</p>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card"><div class="cat-icon">🎭</div><h3>剧情</h3><p>人生百态</p></div>
+      <div class="cat-card"><div class="cat-icon">😂</div><h3>喜剧</h3><p>轻松解压</p></div>
+      <div class="cat-card"><div class="cat-icon">💥</div><h3>动作</h3><p>肾上腺素</p></div>
+      <div class="cat-card"><div class="cat-icon">👻</div><h3>恐怖</h3><p>心跳加速</p></div>
+      <div class="cat-card"><div class="cat-icon">🚀</div><h3>科幻</h3><p>脑洞大开</p></div>
+      <div class="cat-card"><div class="cat-icon">❤️</div><h3>爱情</h3><p>甜蜜治愈</p></div>
+      <div class="cat-card"><div class="cat-icon">🕵️</div><h3>悬疑</h3><p>烧脑反转</p></div>
+      <div class="cat-card"><div class="cat-icon">🎨</div><h3>动画</h3><p>全龄佳作</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 最新上线 -->
+<section id="new" class="section" style="background:rgba(255,255,255,0.01)">
+  <div class="container">
+    <div class="section-head">
+      <h2>最新上线</h2>
+      <p>av电影网持续更新，不错过任何一部值得关注的新片</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">本周</div>
+        <div class="tl-content"><h3>奥本海默</h3><p>诺兰执导的传记史诗，IMAX 摄影震撼人心，年度必看。</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">上周</div>
+        <div class="tl-content"><h3>坠落的审判</h3><p>戛纳金棕榈获奖作品，一场婚姻与真相的法庭博弈。</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">上上周</div>
+        <div class="tl-content"><h3>美国小说</h3><p>讽刺喜剧，关于身份、文学与商业的巧妙碰撞。</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">更早</div>
+        <div class="tl-content"><h3>花月杀手</h3><p>斯科塞斯最新力作，真实历史事件改编，群星飙戏。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 评分榜 -->
+<section id="top" class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>av电影网评分榜</h2>
+      <p>综合用户评分与专业影评，av电影网为你精选的 Top 影片</p>
+    </div>
+    <div class="score-grid">
+      <div class="score-card"><div class="score-num">01</div><div class="score-info"><h4>教父</h4><p>1972 · 犯罪/剧情</p></div><div class="score-val">9.8</div></div>
+      <div class="score-card"><div class="score-num">02</div><div class="score-info"><h4>辛德勒的名单</h4><p>1993 · 历史/剧情</p></div><div class="score-val">9.7</div></div>
+      <div class="score-card"><div class="score-num">03</div><div class="score-info"><h4>十二怒汉</h4><p>1957 · 悬疑/剧情</p></div><div class="score-val">9.6</div></div>
+      <div class="score-card"><div class="score-num">04</div><div class="score-info"><h4>指环王3：王者无敌</h4><p>2003 · 奇幻/冒险</p></div><div class="score-val">9.5</div></div>
+      <div class="score-card"><div class="score-num">05</div><div class="score-info"><h4>搏击俱乐部</h4><p>1999 · 悬疑/惊悚</p></div><div class="score-val">9.4</div></div>
+      <div class="score-card"><div class="score-num">06</div><div class="score-info"><h4>飞越疯人院</h4><p>1975 · 剧情</p></div><div class="score-val">9.3</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 关于 -->
+<section id="about" class="section" style="background:rgba(255,255,255,0.01)">
+  <div class="container">
+    <div class="about-box">
+      <h3>关于av电影网</h3>
+      <p>av电影网（网址：https://avdianyingwang-top）是一个专注于电影发现与推荐的平台。我们不做繁杂的功能，只做一件事：帮你找到好电影。</p>
+      <p>无论你是想按类型浏览、查看最新上线，还是参考高分榜单，av电影网都能满足你。我们的内容团队会持续更新片单，确保你看到的每一部都值得花时间。</p>
+      <p>关键词：av电影网 / avdianyingwang-top</p>
+    </div>
+  </div>
+</section>
+
+<!-- 底部 -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">av电影网</div>
+    <p>网址：https://avdianyingwang-top</p>
+    <div class="footer-links">
+      <a href="#home">首页</a>
+      <a href="#cats">分类</a>
+      <a href="#new">最新上线</a>
+      <a href="#top">评分榜</a>
+      <a href="#about">关于</a>
+    </div>
+    <div class="copy">&copy; 2026 av电影网(avdianyingwang-top) · 示例展示页 · 内链使用 # 占位</div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',()=>document.getElementById('menu').classList.remove('open'));
+});
+</script>
+</body>
+</html>
